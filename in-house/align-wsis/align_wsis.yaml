@@ -1,0 +1,22 @@
+name: slide_overlay
+channels:
+  - anaconda
+dependencies:
+  - python==3.10.9
+  - black
+  - pylint
+  - mypy
+  - pydocstyle
+  - pytest
+  - pip
+  - pip:
+    - matplotlib==3.10.0
+    - numpy==2.2.2
+    - pandas>=2.1.0
+    - pre_commit
+    - openslide-python
+    - opencv-python 
+    - opencv-python-headless
+    - pillow
+    - tifffile==2024.9.20
+    - imagecodecs

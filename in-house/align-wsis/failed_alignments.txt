@@ -1,0 +1,28 @@
+MF_part_II_project_all_images/PS23-17345_A1_PS23-17706_A1_N_HE-CK.svs AND MF_part_II_project_all_images/POST_IHC_PS23-17345_A1_PS23-17706_A1_normal_HE-CK.svs
+aligned_images/PS23-14642_A1_Ulcer_HE-CD3.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-14642_A1_ulcer_HE-CD3.svs_aligned.ome.tif
+aligned_images/PS23-14642_A1_Ulcer_HE-CD15.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-14642_A1_ulcer_HE-CD15.svs_aligned.ome.tif
+aligned_images/PS23-17345_A1_PS23-17706_A1_N_HE-CK.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-17345_A1_PS23-17706_A1_normal_HE-CK.svs_aligned.ome.tif
+aligned_images/PS23-17771_A1_PS23-17948_N_HE-CD3.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-17771_A1_PS23-17948_normal_HE-CD3.svs_aligned.ome.tif
+POST_IHC_PS23-15535_A1_non-spec_HE-CD15 [didn't work]. openslide.lowlevel.OpenSlideError: negative 	width (-19230) or negative height (-16238) 	not allowedaligned_images/PS23-19823_A1_PS23-19823_B1_PS23-21510_A1_HE-CD3.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-19823_A1_PS23-19823_B1_PS23-25150_A1_cd_HE-CD3.svs_aligned.ome.tif
+aligned_images/PS23-19823_A1_PS23-19823_B1_PS23-21510_A1_HE-CK.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-19823_A1_PS23-19823_B1_PS23-21510_A1_cd_HE-CK.svs_aligned.ome.tif
+aligned_images/PS23-19823_A1_PS23-19823_B1_PS23-21510_A1_HE-CD3.svs_aligned.ome.tif aligned_images/POST_IHC_PS23-19823_A1_PS23-19823_B1_PS23-25150_A1_cd_HE-CD3.svs_aligned.ome.tif 
+aligned_images/PS23-25749_A1_PS23-28165_A1_HE-CD3.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-25749_A1_PS23-28165_A1_cd_HE-CD3.svs_aligned.ome.tif
+MF_part_II_project_all_images/PS23-16539_A_PS23-16539_B1_PS23-10072_A1_Eosc_HE-CD3.svs AND MF_part_II_project_all_images/POST_IHC_PS23-16539_A_PS23-16539_B1_PS23-10072_A1eosc_HE-CD3.svs (Traceback (most recent call last):
+  File "/rds/user/mf774/hpc-work/part_II_project/overlay-wsis/overlay_wsis.py", line 570, in <module>
+    overlay_images_new(
+  File "/rds/user/mf774/hpc-work/part_II_project/overlay-wsis/overlay_wsis.py", line 80, in overlay_images_new
+    transformed_image = warp_affine_tiled(image2, affine_matrix, (height1, width1))
+  File "/rds/user/mf774/hpc-work/part_II_project/overlay-wsis/overlay_wsis.py", line 395, in warp_affine_tiled
+    warped_tile = get_affine_tile(
+  File "/rds/user/mf774/hpc-work/part_II_project/overlay-wsis/overlay_wsis.py", line 488, in get_affine_tile
+    roi_image = cv2.warpAffine(
+cv2.error: OpenCV(4.11.0) /io/opencv/modules/imgproc/src/imgwarp.cpp:1813: error: (-215:Assertion failed) dst.cols < SHRT_MAX && dst.rows < SHRT_MAX && src.cols < SHRT_MAX && src.rows < SHRT_MAX in function 'remap')
+)
+
+MF_part_II_project_all_images/PS23-16539_A_PS23-16539 B1_PS23-10072_A1_Eosc_HE-CD15.svs MF_part_II_project_all_images/POST_IHC_PS23-16539_A_PS23-26539_B1_PS23-10072_A1_eosc_HE-CD15.svs [name issue]
+MF_part_II_project_all_images/PS23-18359_C3_Adenoma_HE-CK.svs MF_part_II_project_all_images/POST_IHC_PS23-18359_C3 adenoma_HE-CK.svs [name issue]
+MF_part_II_project_all_images/PS23-19820_A_PS23-20019 A1_PS23-20493_A1_Adenoma_HE-CK.svs MF_part_II_project_all_images/POST_IHC_PS23-19820_A_PS23-20019_A1_PS23-20493_A1_adenoma_HE-CK.svs [name issue]
+MF_part_II_project_all_images/PS23-25204_A1_PS23-17242 A1_N_HE-CD3.svs MF_part_II_project_all_images/POST_IHC_PS23-25204_A1_PS23-17242_A1_normal_HE-CD3.svs [name issue]
+aligned_images/PS23-18359_C3_Adenoma_HE-CK.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-18359_C3_adenoma_HE-CK.svs_aligned.ome.tif
+aligned_images/PS23-19823_A1_PS23-19823_B1_PS23-21510_A1_HE-CD3.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-19823_A1_PS23-19823_B1_PS23-25150_A1_cd_HE-CD3.svs_aligned.ome.tif
+aligned_images/PS23-18359_C3_Adenoma_HE-CK.svs_aligned.ome.tif AND aligned_images/POST_IHC_PS23-18359_C3_adenoma_HE-CK.svs_aligned.ome.tif
