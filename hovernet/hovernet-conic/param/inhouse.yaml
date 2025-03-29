@@ -1,0 +1,19 @@
+
+
+optimizer_kwargs:
+  'lr' : 1.0e-4
+  'betas' : [0.9, 0.999]
+  'weight_decay' : 0.0
+
+loader_kwargs:
+  # phase 1
+  # train: { 'batch_size' : 6, 'nr_procs' : 8}
+  # infer: { 'batch_size' : 6, 'nr_procs' : 8}
+  # phase 2
+  train: { 'batch_size' : 2, 'nr_procs' : 8}
+  infer: { 'batch_size' : 2, 'nr_procs' : 8}
+
+model_kwargs:
+  num_types: 3  # in-house
+  pretrained_backbone: 'exp_output/local/resnet50-0676ba61.pth'
+  # pretrained_backbone: '/rds/user/mf774/hpc-work/part_II_project/in-house/training-CK/models/baseline/fold_2_00/model/01/net_epoch=2.tar'
