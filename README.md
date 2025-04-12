@@ -36,7 +36,7 @@ This directory contains all publically available datasets used for training and 
 1. Stain clinically diagnosed tissue with haematoxylin and eosin (H&E) and scan whole-slide image (WSI) to .tiff or .svs file
 2. Remove H&E stain from tissue and conduct IHC stain for cell specific markers (e.g. CD3, CK) and scan WSI to .tiff or .svs file
 #### Computational work
-3. Align H&E-stained and IHC-stained WSIs
+3. Align H&E-stained and IHC-stained WSIs (align-wsis directory)
  - Upload H&E and IHC stained scans to 'all-unaligned-wsis' directory and a csv with corresponding mapping between matching file names
  - Create and activate conda environment for WSI alignment
 ```
@@ -55,7 +55,7 @@ python run_align_wsis_for_all_wsis.py
 - Create QuPath project containing all IHC-stained WSIs
 - Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
 - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
-5. Convert QuPath annotations into mask patches
+5. Convert QuPath annotations into mask patches (create-masks directory)
 - Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
 - Create and activate conda environment for creating masks from QuPath .geojson files
 ```
@@ -63,13 +63,13 @@ conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-- convert QuPath .txt files to .csv files (edit file path in convert_segmentation_annotations_txts_to_csvs.py as required)
+- convert QuPath .txt files to .csv files (edit file paths in convert_segmentation_annotations_txts_to_csvs.py as required)
 ```
 python convert_segmentation_annotations_txts_to_csvs.py
 ```
 - calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
 - create masks patches of size 256x256 pixels (format compatible with hovernet)
-6. Match mask patches to H&E patches and IHC patches
+6. Match mask patches to H&E patches and IHC patches (create-he-ihc-patches directory)
 - Create and activate conda environment for creating patches from WSIs
 ```
 conda env create -f conda.requirements.yaml
@@ -79,10 +79,28 @@ pip install .
 pip install --upgrade openslide-python
 ```
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- create patches for aligned H&E and IHC WSIs
+- Create patches for aligned H&E and IHC WSIs (edit file path in extract_patches_from_directory.py as required)
 ```
-change
-``` 
+python extract_patches_from_directory.py
+```
+7. Create hovernet-compatible training data (create-training-data directory)
+- Create he-images.npy ihc-images.npy and masks.npy for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths in create_training_data_per_wsi_for_all_wsis.py as required)
+ ```
+python create_training_data_per_wsi_for_all_wsis.py
+```
+- Create dataset splits for training and validation (edit file paths and number of folds in create_CD3_split.py as required)
+```
+python create_CD3_split.py
+```
+- Create final training data by aggregating together individual WSI he-images.npy files (edit file paths in create_final_training_data.py as required)
+```
+python create_final_training_data.py
+```
+- Create csv file counting number of each nuclei in dataset (edit file paths in create_counts_csv.py as required)
+```
+python create_counts_csv.py
+```
+- (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in analyse_summary_density_diagnosis_csv.ipynb as required)
 
 
 
