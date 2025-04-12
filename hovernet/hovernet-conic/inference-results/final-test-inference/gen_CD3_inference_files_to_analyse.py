@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 from IPython.utils import io as IPyIO
 from tqdm import tqdm
-# sys.path.append('../../')
 os.chdir('/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/')
 sys.path.append(os.getcwd())
+# sys.path.append('../')
 from net_desc import HoVerNetConic
 from run_utils.utils import convert_pytorch_checkpoint
 from tiatoolbox.models import IOSegmentorConfig, SemanticSegmentor
@@ -25,70 +25,29 @@ mpl.rcParams['figure.dpi'] = 300
 
 SEED = 5
 NUM_TYPES = 3
-CHECKPOINT_PATH = '/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/training-results/train-CK/models/baseline/fold_1/model/01/net_epoch=50.tar'
+CHECKPOINT_PATH = '/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/training-results/train-CD3/models/baseline/fold_2/model/01/net_epoch=50.tar'
+TYPE_NAMES = ["lymphocyte", "non-lymphocyte"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", required=True, help="Path to input data directory")
 parser.add_argument("--out_dir", required=True, help="Path to output directory")
 args = parser.parse_args()
 
-# DATA_DIR =f'{args.data_dir}'
-# OUT_DIR = f'{args.out_dir}'
 DATA_DIR = args.data_dir
 head, tail = os.path.split(DATA_DIR)
 tail = tail.strip("'")
 DATA_DIR = os.path.join(head, tail)
 OUT_DIR = args.out_dir
-OUT_DIR = OUT_DIR.strip('"')
 
 checkpoint = torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu'))['desc']
 checkpoint = convert_pytorch_checkpoint(checkpoint)
 model = HoVerNetConic(num_types=NUM_TYPES)
 model.load_state_dict(checkpoint)
 
-# Tile prediction
-predictor = SemanticSegmentor(
-    model=model,
-    num_loader_workers=2,
-    batch_size=64,
-)
+output_file = f'{OUT_DIR}/CD3/raw/file_map.dat'
+print(output_file)
+output_info = joblib.load(output_file)
 
-# Define the input/output configurations
-ioconfig = IOSegmentorConfig(
-    input_resolutions=[
-        {'units': 'baseline', 'resolution': 1.0},
-    ],
-    output_resolutions=[
-        {'units': 'baseline', 'resolution': 1.0},
-        {'units': 'baseline', 'resolution': 1.0},
-        {'units': 'baseline', 'resolution': 1.0},
-    ],
-    save_resolution={'units': 'baseline', 'resolution': 1.0},
-    patch_input_shape=[256, 256],
-    patch_output_shape=[256, 256],
-    stride_shape=[256, 256],
-)
-
-logger = logging.getLogger()
-logger.disabled = True
-
-infer_img_paths = recur_find_ext(f'{DATA_DIR}', ext=['.png'])
-print(infer_img_paths)
-rmdir(f'{OUT_DIR}/CK/raw/')
-
-# capture all the printing to avoid cluttering the console
-# with IPyIO.capture_output() as captured:
-output_file = predictor.predict(
-    infer_img_paths,
-    masks=None,
-    mode='tile',
-    #on_gpu=True,
-    ioconfig=ioconfig,
-    crash_on_exception=True,
-    save_dir= OUT_DIR +'/CK/raw/'
-)
-
-"""
 def process_segmentation(np_map, hv_map, tp_map):
     # HoVerNet post-proc is coded at 0.25mpp so we resize
     np_map = cv2.resize(np_map, (0, 0), fx=2.0, fy=2.0)
@@ -141,13 +100,8 @@ def process_composition(pred_map):
     type_freqs[type_freqs_[0]] = type_freqs_[1]
     return type_freqs
 
-output_file = f'{OUT_DIR}/CK/raw/file_map.dat'
-output_info = joblib.load(output_file)
-
 semantic_predictions = []
 composition_predictions = []
-print("got to line 142")
-print(len(output_info))
 for input_file, output_root in tqdm(output_info):
     img = cv2.imread(input_file)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -159,28 +113,24 @@ for input_file, output_root in tqdm(output_info):
     type_freqs = process_composition(pred_map)
     if pred_map.shape == (256, 256, 2):
         semantic_predictions.append(pred_map)
-    if type_freqs.shape == (7, ):
+    if type_freqs.shape == (3, ):
         composition_predictions.append(type_freqs)
 semantic_predictions = np.array(semantic_predictions)
 composition_predictions = np.array(composition_predictions)
 
 # Saving the results for segmentation
-np.save(f'{OUT_DIR}/valid_pred.npy', semantic_predictions)
+np.save(f'{OUT_DIR}/CD3/valid_pred.npy', semantic_predictions)
 
 # Saving the results for composition prediction
-TYPE_NAMES = [
-    "neutrophil", "epithelial", "lymphocyte",
-    "plasma", "eosinophil", "connective"
-]
 df = pd.DataFrame(
     composition_predictions[:, 1:].astype(np.int32),
 )
 df.columns = TYPE_NAMES
-df.to_csv(f'{OUT_DIR}/valid_pred_cell.csv', index=False)
+df.to_csv(f'{OUT_DIR}/CD3/valid_pred_cell.csv', index=False)
 
-semantic_pred = np.load(f'{OUT_DIR}/valid_pred.npy')
+semantic_pred = np.load(f'{OUT_DIR}/CD3/valid_pred.npy')
 
-output_file = f'{OUT_DIR}/CK/raw/file_map.dat'
+output_file = f'{OUT_DIR}/CD3/raw/file_map.dat'
 output_info = joblib.load(output_file)
 
 PERCEPTIVE_COLORS = [
@@ -195,7 +145,7 @@ PERCEPTIVE_COLORS = [
 
 # Select a few random indices to visualize
 np.random.seed(SEED)
-selected_indices = np.random.choice(len(output_info), 4, replace=False)
+selected_indices = np.random.choice(len(output_info), 16, replace=False)
 
 def visualize_prediction(idx):
     # Load and visualize segmentation results for a given index
@@ -225,10 +175,9 @@ def visualize_prediction(idx):
     axes[1].set_title("Predicted Segmentation")
     axes[1].axis('off')
     
-    plt.savefig(f'{OUT_DIR}/visualization_{idx}.png', bbox_inches='tight')
+    plt.savefig(f'{OUT_DIR}/CD3/visualization_{idx}.png', bbox_inches='tight')
     plt.close(fig)
 
 # Visualize selected images
 for idx in selected_indices:
     visualize_prediction(idx)
-"""

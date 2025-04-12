@@ -12,7 +12,9 @@ import numpy as np
 import pandas as pd
 from IPython.utils import io as IPyIO
 from tqdm import tqdm
-sys.path.append('../')
+os.chdir('/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/')
+sys.path.append(os.getcwd())
+# sys.path.append('../')
 from net_desc import HoVerNetConic
 from run_utils.utils import convert_pytorch_checkpoint
 from tiatoolbox.models import IOSegmentorConfig, SemanticSegmentor
@@ -23,7 +25,7 @@ mpl.rcParams['figure.dpi'] = 300
 
 SEED = 5
 NUM_TYPES = 3
-CHECKPOINT_PATH = '/rds/user/mf774/hpc-work/part_II_project/in-house/training-CD3/models/baseline/fold_2/model/01/net_epoch=50.tar'
+CHECKPOINT_PATH = '/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/training-results/train-CD3/models/baseline/fold_2/model/01/net_epoch=50.tar'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", required=True, help="Path to input data directory")
@@ -31,6 +33,9 @@ parser.add_argument("--out_dir", required=True, help="Path to output directory")
 args = parser.parse_args()
 
 DATA_DIR = args.data_dir
+head, tail = os.path.split(DATA_DIR)
+tail = tail.strip("'")
+DATA_DIR = os.path.join(head, tail)
 OUT_DIR = args.out_dir
 
 checkpoint = torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu'))['desc']
@@ -79,7 +84,7 @@ output_file = predictor.predict(
     save_dir=f'{OUT_DIR}/CD3/raw/'
 )
 
-
+"""
 def process_segmentation(np_map, hv_map, tp_map):
     # HoVerNet post-proc is coded at 0.25mpp so we resize
     np_map = cv2.resize(np_map, (0, 0), fx=2.0, fy=2.0)
@@ -186,10 +191,10 @@ PERCEPTIVE_COLORS = [
 
 # Select a few random indices to visualize
 np.random.seed(SEED)
-selected_indices = np.random.choice(len(output_info), 4, replace=False)
+selected_indices = np.random.choice(len(output_info), 16, replace=False)
 
 def visualize_prediction(idx):
-    """ Load and visualize segmentation results for a given index."""
+    # Load and visualize segmentation results for a given index
     img = cv2.imread(output_info[idx][0])
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
@@ -222,3 +227,4 @@ def visualize_prediction(idx):
 # Visualize selected images
 for idx in selected_indices:
     visualize_prediction(idx)
+"""

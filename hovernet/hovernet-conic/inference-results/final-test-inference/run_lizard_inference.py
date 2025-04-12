@@ -12,7 +12,8 @@ import numpy as np
 import pandas as pd
 from IPython.utils import io as IPyIO
 from tqdm import tqdm
-sys.path.append('../')
+os.chdir('/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/')
+sys.path.append(os.getcwd())
 from net_desc import HoVerNetConic
 from run_utils.utils import convert_pytorch_checkpoint
 from tiatoolbox.models import IOSegmentorConfig, SemanticSegmentor
@@ -23,7 +24,7 @@ mpl.rcParams['figure.dpi'] = 300
 
 SEED = 5
 NUM_TYPES = 7
-CHECKPOINT_PATH = 'CHANGEME'
+CHECKPOINT_PATH = '/rds/user/mf774/hpc-work/part_II_project/hovernet/hovernet-conic/training-results/train-lizard/models/baseline/fold_0/model/01/net_epoch=50.tar'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", required=True, help="Path to input data directory")
@@ -31,7 +32,11 @@ parser.add_argument("--out_dir", required=True, help="Path to output directory")
 args = parser.parse_args()
 
 DATA_DIR = args.data_dir
+head, tail = os.path.split(DATA_DIR)
+tail = tail.strip("'")
+DATA_DIR = os.path.join(head, tail)
 OUT_DIR = args.out_dir
+print(OUT_DIR)
 
 checkpoint = torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu'))['desc']
 checkpoint = convert_pytorch_checkpoint(checkpoint)
@@ -69,6 +74,9 @@ rmdir(f'{OUT_DIR}/lizard/raw')
 
 # capture all the printing to avoid cluttering the console
 # with IPyIO.capture_output() as captured:
+# save_path = os.path.join(OUT_DIR, 'lizard/raw/')
+# save_path = save_path.strip("")
+
 output_file = predictor.predict(
     infer_img_paths,
     masks=None,
@@ -78,7 +86,7 @@ output_file = predictor.predict(
     crash_on_exception=True,
     save_dir=f'{OUT_DIR}/lizard/raw/'
 )
-
+"""
 
 def process_segmentation(np_map, hv_map, tp_map):
     # HoVerNet post-proc is coded at 0.25mpp so we resize
@@ -189,7 +197,7 @@ np.random.seed(SEED)
 selected_indices = np.random.choice(len(output_info), 4, replace=False)
 
 def visualize_prediction(idx):
-    """ Load and visualize segmentation results for a given index."""
+    # Load and visualize segmentation results for a given index.
     img = cv2.imread(output_info[idx][0])
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
@@ -222,3 +230,4 @@ def visualize_prediction(idx):
 # Visualize selected images
 for idx in selected_indices:
     visualize_prediction(idx)
+"""

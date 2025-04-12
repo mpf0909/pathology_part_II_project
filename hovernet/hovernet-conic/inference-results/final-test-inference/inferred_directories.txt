@@ -31,7 +31,6 @@
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-20460/'PS23-20460 A1-1_sparse.tiff'
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-14152/'PS23-14152 A1-1_sparse.tiff'
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-10136/'PS23-10136 A1-1_sparse.tiff'
-/rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-19293/'PS23-19293 A1-1_sparse.tiff'
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-19454/'PS23-19454 A1-1_sparse.tiff'
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-21961/'PS23-21961 A1-1_sparse.tiff'
 /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/other/PS23-29449/'PS23-29449 B1-1.tiff'
