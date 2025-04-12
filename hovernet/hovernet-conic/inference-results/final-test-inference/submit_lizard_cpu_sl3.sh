@@ -15,7 +15,7 @@
 #SBATCH -A SOILLEUX-SL3-CPU
 #SBATCH -p icelake-himem
 #SBATCH --mem=67600
-#SBATCH --array=0-1
+#SBATCH --array=0-40
 #! How many whole nodes should be allocated?
 #SBATCH --nodes=1
 #! How many (MPI) tasks will there be in total? (<= nodes*76)
@@ -23,7 +23,7 @@
 #! 3380 MiB of memory per CPU.
 #SBATCH --ntasks=1
 #! How much wallclock time will be required?
-#SBATCH --time=04:00:00
+#SBATCH --time=02:00:00
 #! What types of email messages do you wish to receive?
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=mf774@cam.ac.uk
@@ -62,7 +62,7 @@ module load rhel8/default-icl              # REQUIRED - loads the basic environm
 
 # Get the DATA_DIR and OUT_DIR for this task
 # line=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" directories.txt)
-IFS= read -r DATA_DIR < <(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" final_directories.txt | tr -d '\r')
+IFS= read -r DATA_DIR < <(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" inferred_directories.txt | tr -d '\r')
 # /rds/user/mf774/hpc-work/part_II_project/in-house/inference-data/normal/PS23-10404/PS23-10404 A1-1_sparse.tiff
 # OUT_DIR="${DATA_DIR//\/data\//\/inference\/}"
 OUT_DIR="${DATA_DIR//\/hpc-work\//\/rds-part-ii-project-3PvMefeRXQQ\/}"
