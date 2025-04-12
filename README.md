@@ -21,8 +21,8 @@ NB this repo is not currently designed for external use (e.g. it contains hard-c
 ## Structure of repo
 ### hovernet directory
 This directory contains all of the code used to train, validate, run inference and analyse both publically available datasets and my own datasets. It also contains output data from training, validation and inference (not synced). 
-- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [Hovernet master branch]https://github.com/vqdang/hover_net/tree/master
-- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [Hovernet conic branch]https://github.com/vqdang/hover_net/tree/conic
+- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [Hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
+- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [Hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
 
 ### in-house directory
 This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux-Lab exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset.
@@ -53,7 +53,7 @@ python run_align_wsis_for_all_wsis.py
 - Download QuPath (Bankhead et al., 2017) 0.5.1: https://qupath.github.io/ (other versions may also work)
 - Install StarDist (Schmidt et al., 2018) extension for QuPath v0.5.0: https://github.com/qupath/qupath-extension-stardist
 - Create QuPath project containing all IHC-stained WSIs
-- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021): https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
+- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
 - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
 5. Convert QuPath annotations into mask patches
 - Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
@@ -69,7 +69,7 @@ python convert_segmentation_annotations_txts_to_csvs.py
 ```
 - calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
 - create masks patches of size 256x256 pixels (format compatible with hovernet)
-6. Match mask patches to H&E patches and IHC patchees
+6. Match mask patches to H&E patches and IHC patches
 - Create and activate conda environment for creating patches from WSIs
 ```
 conda env create -f conda.requirements.yaml
@@ -78,10 +78,10 @@ cd lyzeum-ml
 pip install .
 pip install --upgrade openslide-python
 ```
-- Install QuPath 0.3.2: https://github.com/qupath/qupath and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- create patches for aligned H&E and IHC WSIs (NB code not uploaded to repo since part of Lyzeum proprietary IP)
+- Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
+- create patches for aligned H&E and IHC WSIs
 ```
-
+change
 ``` 
 
 
