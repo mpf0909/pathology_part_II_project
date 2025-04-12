@@ -21,8 +21,8 @@ NB this repo is not currently designed for external use (e.g. it contains hard-c
 ## Structure of repo
 ### hovernet directory
 This directory contains all of the code used to train, validate, run inference and analyse both publically available datasets and my own datasets. It also contains output data from training, validation and inference (not synced). 
-- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the Hovernet master branch: https://github.com/vqdang/hover_net/tree/master
-- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the Hovernet conic branch: https://github.com/vqdang/hover_net/tree/conic
+- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [Hovernet master branch]https://github.com/vqdang/hover_net/tree/master
+- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [Hovernet conic branch]https://github.com/vqdang/hover_net/tree/conic
 
 ### in-house directory
 This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux-Lab exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset.
