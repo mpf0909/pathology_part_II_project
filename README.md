@@ -6,7 +6,7 @@ This repo contains all of the code used for my Pathology Part II Project. My pro
 1. Publically available histopathologist paired-labelled datasets (CPM17, PanNuke, Lizard)
 2. Self-generated paired-labelled datasets (CD3, CK)
 
-Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout Lyzeum. The diagnostic results are as follows:
+Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained duodenal tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout company Lyzeum. The test dataset included 15 normal cases, 15 coeliac cases, 5 adenomas, 2 adenocarcinomas, 2 ulcer, 2 neuroendocrine tumour. The diagnostic results are as follows:
 
 | Model                   | Precision (normal) | Precision (pathology) | Recall (normal) | Recall (pathology) | f1-score (normal) | f1-score (pathology) | Overall accuracy |
 |-------------------------|--------------------|-----------------------|-----------------|--------------------|-------------------|----------------------|------------------|
@@ -15,6 +15,8 @@ Diagnostic performance was then assessed on unseen clinically obtained, processe
 | CK-trained Hovernet     | 0.44               | 0.67                  | 0.80            | 0.29               | 0.57              | 0.40                 | 0.5000           |
 
 As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in ~91% of cases thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
+
+Whilst the CD3-trained Hovernet and CK-trained Hovernet are poorer at biopsy diagnosis this is perhaps not surprising given the CD3 and CK dataset were generated **entirely automatically** (no human labelling involved). The development of an automated pipeline to generate training data for Hovernet from scratch in this project is itself a success since it enabled, across both the CD3 and CK dataset, labelling of 9,809,543 cells; **approximately 20x more cells than in the largest publically available dataset (Lizard)**. It is anticipated that further development of this pipeline will result the ability to create accurately-labelled datasets orders of magnitude larger than those currently available for future machine learning applications.
 
 NB this repo is not currently designed for external use (e.g. it contains hard-coded file paths and frequently lacks use of command-line arguments) however the end of this README.md contains a step-by-step guide of how to use this repo.
 
@@ -26,8 +28,6 @@ This directory contains all of the code used to train, validate, run inference a
 
 ### in-house directory
 This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
-
-This automated paired-labelled H&E-stained image dataset generation pipeline was created entirely from scratch for this project (aside from references where given below). The fully automated nature of this project enabled generation of two paired-labelled datasets containing a combined 9,809,543 labelled cells; <ins>**approximately 20x more cells that in the largest publically available dataset (Lizard)**</ins>
 
 ### opensource directory
 This directory contains all publically available datasets used for training and validating Hovernet.
@@ -106,7 +106,9 @@ python create_counts_csv.py
 You have now successfully created a Hovernet-compatible, paired-labelled dataset in a <ins> **fully automated fashion** </ins> (no requirement for human labelling).
 
 ### Training hovernet
-To do
+Whilst this repo contains code enabling training of Hovernet on CPM17, PanNuke, Lizard and self-generated datasets, only training of Hovernet on Lizard and self-generated datasets is of any functional relevance for diagnosing duodenal biopsies since CPM17 and PanNuke datasets contain paired-lablled data entirely from cancer tissue.
+
+Whilst both hovernet-conic and original-hovernet directories can be used for training hovernet - most development has occured 
 
 
 
