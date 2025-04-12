@@ -55,23 +55,34 @@ python run_align_wsis_for_all_wsis.py
 - Create QuPath project containing all IHC-stained WSIs
 - Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021): https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
 - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
-5. Convert QuPath annotations into masks
+5. Convert QuPath annotations into mask patches
 - Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
-```
-python convert_segmentation_annotations_txts_to_csvs.py
-```
 - Create and activate conda environment for creating masks from QuPath .geojson files
 ```
 conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-    - convert QuPath .txt files to .csv files
+- convert QuPath .txt files to .csv files (edit file path in convert_segmentation_annotations_txts_to_csvs.py as required)
+```
+python convert_segmentation_annotations_txts_to_csvs.py
+```
+- calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
+- create masks patches of size 256x256 pixels (format compatible with hovernet)
+6. Match mask patches to H&E patches and IHC patchees
+- Create and activate conda environment for creating patches from WSIs
+```
+conda env create -f conda.requirements.yaml
+conda activate lyzeum_patch_extractor
+cd lyzeum-ml
+pip install .
+pip install --upgrade openslide-python
+```
+- Install QuPath 0.3.2: https://github.com/qupath/qupath and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
+- create patches for aligned H&E and IHC WSIs (NB code not uploaded to repo since part of Lyzeum proprietary IP)
+```
 
-    - convert annotations to masks
-    - calculate thresholds for classification (Gaussian mixture model)
-6. Match masks with corresponding H&E and IHC patches 
-
+``` 
 
 
 
