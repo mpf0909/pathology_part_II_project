@@ -25,7 +25,9 @@ This directory contains all of the code used to train, validate, run inference a
 - The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [Hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
 
 ### in-house directory
-This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux-Lab exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset.
+This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux-Lab exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
+
+This automated paired-labelled H&E-stained image dataset generation pipeline was created entirely from scratch for this project (aside from references where given below). The fully automated nature of this project enabled generation of two paired-labelled datasets containing a combined 9,809,543 labelled cells; approximately 20x more cells that in the largest publically available dataset (Lizard)
 
 ### opensource directory
 This directory contains all publically available datasets used for training and validating Hovernet.
@@ -79,7 +81,7 @@ pip install .
 pip install --upgrade openslide-python
 ```
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- Create patches for aligned H&E and IHC WSIs (edit file path in extract_patches_from_directory.py as required)
+- Create patches for aligned H&E and IHC WSIs (edit file path in extract_patches_from_directory.py as required, code written by Dr Florian Jaeckle)
 ```
 python extract_patches_from_directory.py
 ```
@@ -101,8 +103,10 @@ python create_final_training_data.py
 python create_counts_csv.py
 ```
 - (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in analyse_summary_density_diagnosis_csv.ipynb as required)
-You have now successfully created a Hovernet-compatible, paired-labelled dataset in a **<ins> fully automated fashion </ins>** (no requirement for human labelling)
+You have now successfully created a Hovernet-compatible, paired-labelled dataset in a <ins> **fully automated fashion** </ins> (no requirement for human labelling).
 
+### Training hovernet
+To do
 
 
 
