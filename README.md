@@ -14,7 +14,7 @@ Diagnostic performance was then assessed on unseen clinically obtained, processe
 | CD3-trained Hovernet    | 1.00               | 0.64                  | 0.20            | 1.00               | 0.33              | 0.78                 | 0.6667           |
 | CK-trained Hovernet     | 0.44               | 0.67                  | 0.80            | 0.29               | 0.57              | 0.40                 | 0.5000           |
 
-These results indicate that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
+As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in ~91% of cases thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
 
 NB this repo is not currently designed for external use (e.g. it contains hard-coded file paths and frequently lacks use of command-line arguments) however the end of this README.md contains a step-by-step guide of how to use this repo.
 
@@ -101,7 +101,7 @@ python create_final_training_data.py
 python create_counts_csv.py
 ```
 - (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in analyse_summary_density_diagnosis_csv.ipynb as required)
-
+You have now successfully created a Hovernet-compatible, paired-labelled dataset in a **<ins> fully automated fashion </ins>** (no requirement for human labelling)
 
 
 
