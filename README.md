@@ -6,7 +6,7 @@ This repo contains all of the code used for my Pathology Part II Project. My pro
 1. Publically available histopathologist paired-labelled datasets (CPM17, PanNuke, Lizard)
 2. Self-generated paired-labelled datasets (CD3, CK)
 
-Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained tissue images exclusively available to the Soilleux Lab. The diagnostic results are as follows:
+Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout Lyzeum. The diagnostic results are as follows:
 
 | Model                   | Precision (normal) | Precision (pathology) | Recall (normal) | Recall (pathology) | f1-score (normal) | f1-score (pathology) | Overall accuracy |
 |-------------------------|--------------------|-----------------------|-----------------|--------------------|-------------------|----------------------|------------------|
@@ -33,37 +33,41 @@ This directory contains all publically available datasets used for training and 
 ## Step-by-step guide to using repo
 ### Creating your own dataset
 #### Wet-lab work 
-1. Stain clinically diagnosed tissue with haematoxylini and eosin (H&E) and scan whole-slide image (WSI) to .tiff or .svs file
+1. Stain clinically diagnosed tissue with haematoxylin and eosin (H&E) and scan whole-slide image (WSI) to .tiff or .svs file
 2. Remove H&E stain from tissue and conduct IHC stain for cell specific markers (e.g. CD3, CK) and scan WSI to .tiff or .svs file
 #### Computational work
 3. Align H&E-stained and IHC-stained WSIs
-    - Upload H&E and IHC stained scans to 'all-unaligned-wsis' directory and a csv with corresponding mapping between matching file names
-    - Create and activate conda environment for WSI alignment
+ - Upload H&E and IHC stained scans to 'all-unaligned-wsis' directory and a csv with corresponding mapping between matching file names
+ - Create and activate conda environment for WSI alignment
 ```
 conda env create -f align_wsis.yaml
 conda activate slide_overlay
 conda install -c conda-forge openslide
 ```
-    - Run alignment (edit file paths in run_align_wsis_for_all_wsis.py as required, code written by Dr Florian Jaeckle)
+-  Run alignment (edit file paths in run_align_wsis_for_all_wsis.py as required, code written by Dr Florian Jaeckle)
 ```
 python run_align_wsis_for_all_wsis.py
 ```
-    - Check alignment worked by visualising output files in 'plots' diirectory
+-  Check alignment worked by visualising output files in 'plots' diirectory
 4. Segment cells in QuPath
-    - Download QuPath (Bankhead et al., 2017) 0.5.1: https://qupath.github.io/ (other versions may also work)
-    - Install StarDist (Schmidt et al., 2018) extension for QuPath v0.5.0: https://github.com/qupath/qupath-extension-stardist
-    - Create QuPath project containing all IHC-stained WSIs
-    - Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021): https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
-    - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
+- Download QuPath (Bankhead et al., 2017) 0.5.1: https://qupath.github.io/ (other versions may also work)
+- Install StarDist (Schmidt et al., 2018) extension for QuPath v0.5.0: https://github.com/qupath/qupath-extension-stardist
+- Create QuPath project containing all IHC-stained WSIs
+- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021): https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
+- Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
 5. Convert QuPath annotations into masks
-    - Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
-    - Create and activate conda environment for creating masks from QuPath .geojson files
+- Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
+```
+python convert_segmentation_annotations_txts_to_csvs.py
+```
+- Create and activate conda environment for creating masks from QuPath .geojson files
 ```
 conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-    - convert .txt files to .csv files
+    - convert QuPath .txt files to .csv files
+
     - convert annotations to masks
     - calculate thresholds for classification (Gaussian mixture model)
 6. Match masks with corresponding H&E and IHC patches 
