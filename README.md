@@ -110,6 +110,7 @@ python create_training_data_per_wsi_for_all_wsis.py
 python create_CD3_split.py
 ```
 - Create final training data by aggregating together individual WSI he-images.npy files (edit file paths for DIRECTORIES, fold_1_files, fold_2_files, patch_info_path and numpy save paths ```create_final_training_data.py``` as required). Please note this script currently only works for files with a strict naming convention and therefore may need to be edited.
+```
 python create_final_training_data.py
 ```
 - Create csv file counting number of each nuclei in dataset (edit file paths for ```labels``` and ```df.to_csv``` ```create_counts_csv.py``` as required)
