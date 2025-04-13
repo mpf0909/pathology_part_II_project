@@ -49,7 +49,7 @@ conda env create -f align_wsis.yaml
 conda activate slide_overlay
 conda install -c conda-forge openslide
 ```
--  Run alignment (edit file paths in ```run_align_wsis_for_all_wsis.py``` as required, code written by Dr Florian Jaeckle)
+-  Run alignment (edit file paths for ```CSV_FILE```, ```WSI_DIRECTORY``` and ```WSI_ALIGNED_DIRECTORY``` in ```run_align_wsis_for_all_wsis.py``` as required, code written by Dr Florian Jaeckle)
 ```
 cd in-house/align-wsis/scripts/
 python run_align_wsis_for_all_wsis.py
@@ -70,7 +70,7 @@ conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-- Convert QuPath .txt files to .csv files (edit file paths in ```convert_segmentation_annotations_txts_to_csvs.py``` as required)
+- Convert QuPath .txt files to .csv files (edit file paths for ```input_dir``` and ```output_dir``` in ```convert_segmentation_annotations_txts_to_csvs.py``` as required)
 ```
 cd in-house/create-masks/scripts/
 python convert_segmentation_annotations_txts_to_csvs.py
@@ -88,30 +88,31 @@ pip install .
 pip install --upgrade openslide-python
 ```
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- Create patches for aligned H&E and IHC WSIs (edit file path in ```extract_patches_from_directory.py``` as required, code written by Dr Florian Jaeckle)
+- Create patches for aligned H&E and IHC WSIs (edit file path for ```input_dir```, ```output_dir``` and ```script_path```in ```extract_patches_from_directory.py``` as required)
 ```
 cd in-house/create-he-ihc-patches/additional-scripts-for-github/
 python extract_patches_from_directory.py
 ```
 7. Visualise masks to assess quality of segmentation and classification (NB - Jupyter notebook found in ```hovernet/hovernet-conic/ihc-mask-overlay``` NOT within any ```in-house``` subdirectory. Sorry I know this is confusing!)
+- Edit file paths for ```DIRECTORIES```, ```he_images```, ```masks``` and ```directory``` as required 
 ```
 cd hovernet/hovernet-conic/ihc-mask-overlay/
 overlay_check_folds.ipynb
 ```
 8. Create hovernet-compatible training data (create-training-data directory)
-- Create ```he-images.npy``` ```ihc-images.npy``` and ```masks.npy``` for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths in ```create_training_data_per_wsi_for_all_wsis.py``` as required)
- ```
+- Create ```he-images.npy``` ```ihc-images.npy``` and ```masks.npy``` for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths for ```output_csv```, all keys in ```base_dirs``` and ```output_dir``` in ```create_training_data_per_wsi_for_all_wsis.py``` as required)
+```
+cd in-house/create-training-data/scripts/
 python create_training_data_per_wsi_for_all_wsis.py
 ```
-- Create dataset splits for training and validation (edit file paths and number of folds in ```create_CD3_split.py``` as required)
+- Create dataset splits for training and validation (edit file paths in ```info```, ```fold1_files```, ```fold2_files``` and joblib output paths in ```create_CD3_split.py``` as required)
 ```
 python create_CD3_split.py
 ```
-- Create final training data by aggregating together individual WSI he-images.npy files (edit file paths in ```create_final_training_data.py``` as required)
-```
+- Create final training data by aggregating together individual WSI he-images.npy files (edit file paths for DIRECTORIES, fold_1_files, fold_2_files, patch_info_path and numpy save paths ```create_final_training_data.py``` as required). Please note this script currently only works for files with a strict naming convention and therefore may need to be edited.
 python create_final_training_data.py
 ```
-- Create csv file counting number of each nuclei in dataset (edit file paths in ```create_counts_csv.py``` as required)
+- Create csv file counting number of each nuclei in dataset (edit file paths for ```labels``` and ```df.to_csv``` ```create_counts_csv.py``` as required)
 ```
 python create_counts_csv.py
 ```
