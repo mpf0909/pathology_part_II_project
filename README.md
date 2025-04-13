@@ -1,7 +1,7 @@
 # part_II_project
 
 ## Overview
-This repo contains all of the code used for my Pathology Part II Project. My project centred on using machine learning-based cell segmentation and classification approaches - specifically [Hovernet](https://www.sciencedirect.com/science/article/pii/S1361841519301045) (Graham et al., 2019) - to diagnose normal duodenal biopsies. This research was motivated by the assumption that densities of various cell types (e.g. lymphocyte, epithelial cell, neutrophil, plasma cell, eosinophil, connective cell) will characteristically vary from normal levels in pathology. This was achieved by training Hovernet models on two types of data:
+This repo contains all of the code used for my Pathology Part II Project. My project centred on using machine learning-based cell segmentation and classification approaches - specifically [Hovernet](https://www.sciencedirect.com/science/article/pii/S1361841519301045) (Graham et al., 2019) - to diagnose normal duodenal biopsies. This research was motivated by the assumption that densities of various cell types (e.g. lymphocyte, epithelial cell, neutrophil, plasma cell, eosinophil, connective cell) will characteristically vary from normal levels in pathology. This was achieved by training hovernet models on two types of data:
 
 1. Publically available histopathologist paired-labelled datasets ([CPM17](https://drive.google.com/drive/folders/1l55cv3DuY-f7-JotDN7N5nbNnjbLWchK), [PanNuke](link), [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb)
 2. Self-generated paired-labelled datasets (CD3, CK)
@@ -10,24 +10,24 @@ Diagnostic performance was then assessed on unseen clinically obtained, processe
 
 | Model                   | Precision (normal) | Precision (pathology) | Recall (normal) | Recall (pathology) | f1-score (normal) | f1-score (pathology) | Overall accuracy |
 |-------------------------|--------------------|-----------------------|-----------------|--------------------|-------------------|----------------------|------------------|
-| Lizard-trained Hovernet | 0.83               | 1.00                  | 1.00            | 0.86               | 0.91              | 0.92                 | 0.9167           |
-| CD3-trained Hovernet    | 1.00               | 0.64                  | 0.20            | 1.00               | 0.33              | 0.78                 | 0.6667           |
-| CK-trained Hovernet     | 0.44               | 0.67                  | 0.80            | 0.29               | 0.57              | 0.40                 | 0.5000           |
+| Lizard-trained hovernet | 0.83               | 1.00                  | 1.00            | 0.86               | 0.91              | 0.92                 | 0.9167           |
+| CD3-trained hovernet    | 1.00               | 0.64                  | 0.20            | 1.00               | 0.33              | 0.78                 | 0.6667           |
+| CK-trained hovernet     | 0.44               | 0.67                  | 0.80            | 0.29               | 0.57              | 0.40                 | 0.5000           |
 
 As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in ~91% of cases thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
 
-Whilst the CD3-trained Hovernet and CK-trained Hovernet are poorer at biopsy diagnosis this is perhaps not surprising given the CD3 and CK dataset were generated **entirely automatically** (no human labelling involved). The development of an automated pipeline to generate training data for Hovernet from scratch in this project is itself a success since it enabled, across both the CD3 and CK dataset, labelling of 9,809,543 cells; **approximately 20x more cells than in the largest publically available dataset (Lizard)**. It is anticipated that further development of this pipeline will result the ability to create accurately-labelled datasets orders of magnitude larger than those currently available for future machine learning applications.
+Whilst the CD3-trained hovernet and CK-trained hovernet are poorer at biopsy diagnosis this is perhaps not surprising given the CD3 and CK dataset were generated **entirely automatically** (no human labelling involved). The development of an automated pipeline to generate training data for hovernet from scratch in this project is itself a success since it enabled, across both the CD3 and CK dataset, labelling of 9,809,543 cells; **approximately 20x more cells than in the largest publically available dataset (Lizard)**. It is anticipated that further development of this pipeline will result the ability to create accurately-labelled datasets orders of magnitude larger than those currently available for future machine learning applications.
 
 NB this repo is not currently designed for external use (e.g. it contains hard-coded file paths and frequently lacks use of command-line arguments) however the end of this README.md contains a step-by-step guide of how to use this repo.
 
 ## Structure of repo
 ### hovernet directory
 This directory contains all of the code used to train, validate, run inference and analyse both publically available datasets and my own datasets. It also contains output data from training, validation and inference (not synced). 
-- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [Hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
-- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [Hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
+- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
+- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
 
 ### in-house directory
-This directory contains all "in-house" data used for the project. This includes (1) Hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
+This directory contains all "in-house" data used for the project. This includes (1) hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
 
 ### opensource directory
 This directory contains all publically available datasets used for training and validating Hovernet.
@@ -65,12 +65,12 @@ conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-- convert QuPath .txt files to .csv files (edit file paths in convert_segmentation_annotations_txts_to_csvs.py as required)
+- Convert QuPath .txt files to .csv files (edit file paths in convert_segmentation_annotations_txts_to_csvs.py as required)
 ```
 python convert_segmentation_annotations_txts_to_csvs.py
 ```
-- calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
-- create masks patches of size 256x256 pixels (format compatible with hovernet)
+- Calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
+- Create masks patches of size 256x256 pixels (format compatible with hovernet)
 6. Match mask patches to H&E patches and IHC patches (create-he-ihc-patches directory)
 - Create and activate conda environment for creating patches from WSIs
 ```
