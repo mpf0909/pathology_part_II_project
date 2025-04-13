@@ -38,6 +38,7 @@ This directory contains all publically available datasets used for training and 
 1. Stain clinically diagnosed tissue with haematoxylin and eosin (H&E) and scan whole-slide image (WSI) to .tiff or .svs file
 2. Remove H&E stain from tissue and conduct IHC stain for cell specific markers (e.g. CD3, CK) and scan WSI to .tiff or .svs file
 #### Computational work
+Unless otherwise stated use the ```tiatoolbox``` conda environment for all scripts
 3. Align H&E-stained and IHC-stained WSIs (align-wsis directory)
  - Upload H&E and IHC stained scans to 'all-unaligned-wsis' directory and a csv with corresponding mapping between matching file names
  - Create and activate conda environment for WSI alignment
@@ -71,7 +72,7 @@ python convert_segmentation_annotations_txts_to_csvs.py
 ```
 - Calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
 - Create masks patches of size 256x256 pixels (format compatible with hovernet)
-6. Match mask patches to H&E patches and IHC patches (create-he-ihc-patches directory)
+6. Match mask patches to H&E patches and IHC patches for each WSI (create-he-ihc-patches directory)
 - Create and activate conda environment for creating patches from WSIs
 ```
 conda env create -f conda.requirements.yaml
@@ -81,34 +82,63 @@ pip install .
 pip install --upgrade openslide-python
 ```
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- Create patches for aligned H&E and IHC WSIs (edit file path in extract_patches_from_directory.py as required, code written by Dr Florian Jaeckle)
+- Create patches for aligned H&E and IHC WSIs (edit file path in ```extract_patches_from_directory.py``` as required, code written by Dr Florian Jaeckle)
 ```
 python extract_patches_from_directory.py
 ```
-7. Create hovernet-compatible training data (create-training-data directory)
-- Create he-images.npy ihc-images.npy and masks.npy for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths in create_training_data_per_wsi_for_all_wsis.py as required)
+7. Visualise masks to assess quality of segmentation and classification (ihc-mask-overlay subdirectory within hovernet-conic directory; sorry I know this is confusing but it relies on hovernet scripts)
+- Run overlay_check_folds.ipynb (edit file paths in overlay_check_folds.ipynb as required)
+8. Create hovernet-compatible training data (create-training-data directory)
+- Create ```he-images.npy``` ```ihc-images.npy``` and ```masks.npy``` for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths in ```create_training_data_per_wsi_for_all_wsis.py``` as required)
  ```
 python create_training_data_per_wsi_for_all_wsis.py
 ```
-- Create dataset splits for training and validation (edit file paths and number of folds in create_CD3_split.py as required)
+- Create dataset splits for training and validation (edit file paths and number of folds in ```create_CD3_split.py``` as required)
 ```
 python create_CD3_split.py
 ```
-- Create final training data by aggregating together individual WSI he-images.npy files (edit file paths in create_final_training_data.py as required)
+- Create final training data by aggregating together individual WSI he-images.npy files (edit file paths in ```create_final_training_data.py``` as required)
 ```
 python create_final_training_data.py
 ```
-- Create csv file counting number of each nuclei in dataset (edit file paths in create_counts_csv.py as required)
+- Create csv file counting number of each nuclei in dataset (edit file paths in ```create_counts_csv.py``` as required)
 ```
 python create_counts_csv.py
 ```
-- (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in analyse_summary_density_diagnosis_csv.ipynb as required)
+- (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in ```analyse_summary_density_diagnosis_csv.ipynb``` as required)
 You have now successfully created a Hovernet-compatible, paired-labelled dataset in a <ins>**fully automated fashion**</ins> (no requirement for human labelling).
 
 ### Training hovernet
-Whilst this repo contains code enabling training of Hovernet on CPM17, PanNuke, Lizard and self-generated datasets, only training of Hovernet on Lizard and self-generated datasets is of any functional relevance for diagnosing duodenal biopsies since CPM17 and PanNuke datasets contain paired-lablled data entirely from cancer tissue.
+Whilst this repo contains code enabling training of Hovernet on CPM17, PanNuke, Lizard and self-generated datasets, only training of Hovernet on Lizard and self-generated datasets is of functional relevance for diagnosing duodenal biopsies. This is because
+- CPM17 labels only segment cells - it does not classify them. Therefore only total cell density can be used as a predictor of pathology
+- PanNuke labels segment and classify cells - however its classification labels (neoplastic, non-neoplastic epithelial, inflammatory, connective, dead, non-nuclei) are highly specific to the diagnosis of cancer and were found to poorly generalise to classification of non-cancerous biopsies (normal, coeliac etc).
+These datasets were used to first get hovernet working (training, inference) since the dataset specifically designed for use with hovernet, CoNSeP, was (and still is) behind a University of Warwick login wall. By contrast CPM17 and PanNuke were referenced in both the Hovernet paper and GitHub as datasets that can work (after much tweaking!) with the repo.
 
-Whilst both hovernet-conic and original-hovernet directories can be used for training hovernet - most development has occured 
+As such this section will focus on how to train hovernet with Lizard and self-generated datasets. This is all done in ```hovernet-conic``` except where specified. For those that are interested there is a final endnote outlining use of hovernet with CPM17 and PanNuke.
+
+1. Setup pretrained backbone for hovernet models
+- Download [PyTorch ImageNet ResNet50](https://download.pytorch.org/models/resnet50-0676ba61.pth) and upload to ```pretrained/```
+- Edit ```pretrained_backbone``` variable in ```param/template.yaml``` to point to the downloaded weights above
+2. Download [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb) and upload to ```opensource/lizard/```
+3. Set model hyperparameters and runtime parameters
+- change number of number of training epochs and weights for each loss component as required in ```models/hovernet/opt.py```
+- change batch_size etc in ```param/template.yaml```
+4. Split Lizard dataset into training and validation folds. See section 8 above for how to do this with self-generated dataset
+- Edit ```info``` file path, ```test_size``` and ```train_size``` as required
+```
+python generate_split.py
+```
+- 
+
+### Endnote - using hovernet with CPM17 and PanNuke
+
+## Citation
+If any part of this code is used please give appropriate citation to this GitHub
+
+## Authors
+- Matthew Ferguson
 
 
-
+Differences between conic branch and original branch
+- original uses ImageNet-ResNet50-Preact_pytorch.tar ResNet50, conic uses resnet50-0676ba61.pth
+- conic uses padded convolution in the decoders to result in the same output size as the input image. Original outputs patches either 80x80 pixels or 164x164 pixels. This would result in far more files being generated. 
