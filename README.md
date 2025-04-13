@@ -155,6 +155,7 @@ cd hovernet/hovernet-conic/
 conda env create -f conda.requirements.yaml
 conda activate /home/mf774/rds/hpc-work/condaenvs/hovernet
 ```
+- Then initialise training. Note slurm was used to handle job submission to University of Cambridge HPC for this project.
 ```
 python run.py
 ```
