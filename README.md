@@ -38,7 +38,7 @@ This directory contains all publically available datasets used for training and 
 1. Stain clinically diagnosed tissue with haematoxylin and eosin (H&E) and scan whole-slide image (WSI) to .tiff or .svs file
 2. Remove H&E stain from tissue and conduct IHC stain for cell specific markers (e.g. CD3, CK) and scan WSI to .tiff or .svs file
 #### Computational work
-Unless otherwise stated use the ```tiatoolbox``` conda environment for all scripts
+Unless otherwise stated use the ```tiatoolbox``` conda environment for all scripts.
 3. Align H&E-stained and IHC-stained WSIs
 - Upload H&E and IHC stained scans to ```in-house/align-wsis/all-unaligned-wsis``` directory and a csv with corresponding mapping between matching file names
 - Create and activate conda environment for WSI alignment
