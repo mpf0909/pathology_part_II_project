@@ -93,7 +93,7 @@ pip install --upgrade openslide-python
 cd in-house/create-he-ihc-patches/additional-scripts-for-github/
 python extract_patches_from_directory.py
 ```
-7. Visualise masks to assess quality of segmentation and classification (NB - scripts in ```hovernet/hovernet-conic/ihc-mask-overlay```; sorry I know this is confusing!)
+7. Visualise masks to assess quality of segmentation and classification (NB - Jupyter notebook found in ```hovernet/hovernet-conic/ihc-mask-overlay``` NOT within any ```in-house``` subdirectory. Sorry I know this is confusing!)
 ```
 cd hovernet/hovernet-conic/ihc-mask-overlay/
 overlay_check_folds.ipynb
