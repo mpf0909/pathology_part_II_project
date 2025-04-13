@@ -103,7 +103,7 @@ python create_final_training_data.py
 python create_counts_csv.py
 ```
 - (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in analyse_summary_density_diagnosis_csv.ipynb as required)
-You have now successfully created a Hovernet-compatible, paired-labelled dataset in a <ins> **fully automated fashion** </ins> (no requirement for human labelling).
+You have now successfully created a Hovernet-compatible, paired-labelled dataset in a <ins>**fully automated fashion**</ins> (no requirement for human labelling).
 
 ### Training hovernet
 Whilst this repo contains code enabling training of Hovernet on CPM17, PanNuke, Lizard and self-generated datasets, only training of Hovernet on Lizard and self-generated datasets is of any functional relevance for diagnosing duodenal biopsies since CPM17 and PanNuke datasets contain paired-lablled data entirely from cancer tissue.
