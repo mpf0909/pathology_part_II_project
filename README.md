@@ -6,7 +6,7 @@ This repo contains all of the code used for my Pathology Part II Project. My pro
 1. Publically available histopathologist paired-labelled datasets ([CPM17](https://drive.google.com/drive/folders/1l55cv3DuY-f7-JotDN7N5nbNnjbLWchK), [PanNuke](link), [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb))
 2. Self-generated paired-labelled datasets (CD3, CK)
 
-Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained duodenal tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout company Lyzeum. The test dataset included 15 normal cases, 15 coeliac cases, 5 adenomas, 2 adenocarcinomas, 2 ulcer, 2 neuroendocrine tumour. The diagnostic results are as follows:
+Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained duodenal tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout company, Lyzeum. The test dataset included 15 normal cases, 15 coeliac cases, 5 adenomas, 2 adenocarcinomas, 2 ulcer, 2 neuroendocrine tumour. A binary classifier logistic regression model was fitted using densities of each cell type identified by each hovernet. The diagnostic results are as follows:
 
 | Model                   | Precision (normal) | Precision (pathology) | Recall (normal) | Recall (pathology) | f1-score (normal) | f1-score (pathology) | Overall accuracy |
 |-------------------------|--------------------|-----------------------|-----------------|--------------------|-------------------|----------------------|------------------|
