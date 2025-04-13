@@ -30,7 +30,7 @@ This directory contains all of the code used to train, validate, run inference a
 This directory contains all "in-house" data used for the project. This includes (1) hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
 
 ### opensource directory
-This directory contains all publically available datasets used for training and validating Hovernet.
+This directory contains all publically available datasets used for training and validating hovernet models.
 
 ## Step-by-step guide to using repo
 ### Creating your own dataset
