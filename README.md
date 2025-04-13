@@ -25,6 +25,9 @@ NB this repo is not currently designed for external use (e.g. it contains hard-c
 This directory contains all of the code used to train, validate, run inference and analyse both publically available datasets and my own datasets. It also contains output data from training, validation and inference (not synced). 
 - ```hovernet/original-hovernet/``` contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
 - ```hovernet/hovernet-conic/``` contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
+- The only differences in implementation between ```hovernet-conic``` and ```original-hovernet``` are that (1) ```hovernet-conic``` uses ```resnet50-0676ba61.pth``` for its pretrained weights whereas ```original-hovernet``` uses ```ImageNet-ResNet50-Preact_pytorch.tar``` and (2) ```hovernet-conic ``` uses padded deconvolution in the decoders to result in the same output size as the input patches. By contrast ```original-hovernet``` outputs patches either 80x80 or 164x164 pixels.  
+
+Despite some redundancy between these directories they were intentionally kept separate for ease of development.
 
 ### in-house directory
 This directory contains all "in-house" data used for the project. This includes (1) hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
@@ -78,6 +81,7 @@ python convert_segmentation_annotations_txts_to_csvs.py
 - Calculate thresholds for classification of annotations using format provided in ```calculate_CK_wsi_classification_thresholds.ipynb```
 - Create masks patches of size 256x256 pixels (format compatible with hovernet)
 6. Match mask patches to H&E patches and IHC patches for each WSI
+- Unfortunately the lyzeum-ml directory cannot be shared since it is proprietary IP owned by Lyzeum, the Soilleux Lab's spinout company. The below instructions detail how this would be done should it become available
 - Create and activate conda environment for creating patches from WSIs
 ```
 cd in-house/create=he-ihc-patches/
@@ -88,7 +92,7 @@ pip install .
 pip install --upgrade openslide-python
 ```
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
-- Create patches for aligned H&E and IHC WSIs (edit file path for ```input_dir```, ```output_dir``` and ```script_path```in ```extract_patches_from_directory.py``` as required)
+- Create patches for aligned H&E and IHC WSIs (edit file path for ```input_dir```, ```output_dir``` and ```script_path```in ```extract_patches_from_directory.py``` as required). The below script must be run on a GPU (can be changed out of the box).
 ```
 cd in-house/create-he-ihc-patches/additional-scripts-for-github/
 python extract_patches_from_directory.py
@@ -134,25 +138,40 @@ As such this section will focus on how to train hovernet with Lizard and self-ge
 1. Setup pretrained backbone for hovernet models
 - Download [PyTorch ImageNet ResNet50](https://download.pytorch.org/models/resnet50-0676ba61.pth) and upload to ```pretrained/```
 - Edit ```pretrained_backbone``` variable in ```param/template.yaml``` to point to the downloaded weights above
-2. Download [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb) and upload to ```opensource/lizard/``` (NB - not in hovernet-conic directory!)
+2. Download [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb) and upload to ```opensource/lizard/``` (NB - not in ```hovernet-conic``` directory!)
 3. Set model hyperparameters and runtime parameters
 - change number of number of training epochs and weights for each loss component as required in ```models/hovernet/opt.py```
 - change batch_size etc in ```param/template.yaml```
 4. Split Lizard dataset into training and validation folds. See section 8 above for how to do this with self-generated dataset
-- Edit ```info``` file path, ```test_size``` and ```train_size``` as required
+- Edit file path for ```info``` and relative proportion of training and testing folds via ```test_size``` and ```train_size``` as required
 ```
+cd hovernet/hovernet-conic/
 python generate_split.py
 ```
-- 
+5. Train hovernet model (edit file paths in ```WORKSPACE_DIR```, ```DATA_DIR```, ```FOLD_IDX```, ```splits``` as required). This requires a GPU.
+- Create and activate conda environment for training. This environment is designed to be compatible for training with the GPU's available through the University of Cambridge's HPC service.
+```
+cd hovernet/hovernet-conic/
+conda env create -f conda.requirements.yaml
+conda activate /home/mf774/rds/hpc-work/condaenvs/hovernet
+```
+```
+python run.py
+```
+6. Check loss functions
+7. Validation
+8. Inference
+9. Analysis
 
 ### Endnote - using hovernet with CPM17 and PanNuke
+1. Highly simplified from original hovernet GitHub for easier use. Put name of dataset in
+2. Convert PanNuke Dataset
+3. Train
+4. Validate
+5. Inference
 
 ## Citation
 If any part of this code is used please give appropriate citation to this GitHub
 
 ## Authors
 - [Matthew Ferguson](https://github.com/mpf0909)
-
-Differences between conic branch and original branch
-- original uses ImageNet-ResNet50-Preact_pytorch.tar ResNet50, conic uses resnet50-0676ba61.pth
-- conic uses padded convolution in the decoders to result in the same output size as the input image. Original outputs patches either 80x80 pixels or 164x164 pixels. This would result in far more files being generated. 
