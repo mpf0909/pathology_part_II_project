@@ -55,7 +55,7 @@ python run_align_wsis_for_all_wsis.py
 - Download [QuPath 0.5.1](https://qupath.github.io/) (Bankhead et al., 2017). Other versions may also work.
 - Install [StarDist extension for QuPath 0.5.0](https://github.com/qupath/qupath-extension-stardist) (Schmidt et al., 2018)
 - Create QuPath project containing all IHC-stained WSIs
-- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' (Zaidi et al., 2021) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
+- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' [(Zaidi et al., 2021)](https://github.com/MarkZaidi/Universal-StarDist-for-QuPath) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
 - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy' -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
 5. Convert QuPath annotations into mask patches (create-masks directory)
 - Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
