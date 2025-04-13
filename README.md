@@ -145,8 +145,7 @@ python generate_split.py
 If any part of this code is used please give appropriate citation to this GitHub
 
 ## Authors
-- Matthew Ferguson
-
+- [Matthew Ferguson](https://github.com/mpf0909)
 
 Differences between conic branch and original branch
 - original uses ImageNet-ResNet50-Preact_pytorch.tar ResNet50, conic uses resnet50-0676ba61.pth
