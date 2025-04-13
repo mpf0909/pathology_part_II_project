@@ -107,14 +107,17 @@ python create_training_data_per_wsi_for_all_wsis.py
 ```
 - Create dataset splits for training and validation (edit file paths in ```info```, ```fold1_files```, ```fold2_files``` and joblib output paths in ```create_CD3_split.py``` as required)
 ```
+cd in-house/create-training-data/scripts/
 python create_CD3_split.py
 ```
 - Create final training data by aggregating together individual WSI he-images.npy files (edit file paths for DIRECTORIES, fold_1_files, fold_2_files, patch_info_path and numpy save paths ```create_final_training_data.py``` as required). Please note this script currently only works for files with a strict naming convention and therefore may need to be edited.
 ```
+cd in-house/create-training-data/scripts/
 python create_final_training_data.py
 ```
 - Create csv file counting number of each nuclei in dataset (edit file paths for ```labels``` and ```df.to_csv``` ```create_counts_csv.py``` as required)
 ```
+cd in-house/create-training-data/scripts/
 python create_counts_csv.py
 ```
 - (Optional) assess statistical significance in cell type density between different pathologies (edit file paths in ```analyse_summary_density_diagnosis_csv.ipynb``` as required)
