@@ -157,12 +157,27 @@ conda activate /home/mf774/rds/hpc-work/condaenvs/hovernet
 ```
 - Then initialise training. Note slurm was used to handle job submission to University of Cambridge HPC for this project.
 ```
+cd hovernet/hovernet-conic/
 python run.py
 ```
-6. Check loss functions
-7. Validation
+6. Check training was successful
+- Plot loss curves for each model using ```hovernet/hovernet-conic/training-results/train-CD3/create_training_curves.ipynb```
+7. Validate model performance by running inference on test data
+- See ```submit_cd3_cpu_sl3.sh``` for array method of submitting jobs
+- Edit file path for ```CHECKPOINT``` in ```run_CD3_inference.py``` etc as required
+```
+cd hovernet/hovernet-conic/inference-results/
+python run_CD3_inference.py
+python run_CK_inference.
+python run_lizard_inference.py
+```
 8. Inference
+- Same as above but using unseen data
 9. Analysis
+- 
+- Determine density of each cell type by pathology
+- Plot
+- Logistic regression
 
 ### Endnote - using hovernet with CPM17 and PanNuke
 1. Highly simplified from original hovernet GitHub for easier use. Put name of dataset in
