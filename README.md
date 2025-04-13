@@ -23,8 +23,8 @@ NB this repo is not currently designed for external use (e.g. it contains hard-c
 ## Structure of repo
 ### hovernet directory
 This directory contains all of the code used to train, validate, run inference and analyse both publically available datasets and my own datasets. It also contains output data from training, validation and inference (not synced). 
-- The subdirectory 'original-hovernet' contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
-- The subdirectory 'hovernet-conic' contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
+- ```hovernet/original-hovernet/``` contains the aforementioned files for use with the CPM17 and PanNuke dataset. Large parts of this directory were obtained from cloning the [hovernet master branch](https://github.com/vqdang/hover_net/tree/master)
+- ```hovernet/hovernet-conic/``` contains the aforementioned files for use with my datasets and the Lizard dataset. Large parts of this directory were obtained from cloning the [hovernet conic branch](https://github.com/vqdang/hover_net/tree/conic)
 
 ### in-house directory
 This directory contains all "in-house" data used for the project. This includes (1) hovernet-compatible self-generated paired-labelled dataset for training (2) Soilleux Lab-exclusive H&E stained tissue images for inference to assess Hovernet performance. It also contains all python code used to make the self-generated dataset. 
@@ -39,42 +39,47 @@ This directory contains all publically available datasets used for training and 
 2. Remove H&E stain from tissue and conduct IHC stain for cell specific markers (e.g. CD3, CK) and scan WSI to .tiff or .svs file
 #### Computational work
 Unless otherwise stated use the ```tiatoolbox``` conda environment for all scripts
-3. Align H&E-stained and IHC-stained WSIs (align-wsis directory)
- - Upload H&E and IHC stained scans to 'all-unaligned-wsis' directory and a csv with corresponding mapping between matching file names
- - Create and activate conda environment for WSI alignment
+3. Align H&E-stained and IHC-stained WSIs
+- Upload H&E and IHC stained scans to ```in-house/align-wsis/all-unaligned-wsis``` directory and a csv with corresponding mapping between matching file names
+- Create and activate conda environment for WSI alignment
 ```
+cd in-house/align-wsis/
 conda env create -f align_wsis.yaml
 conda activate slide_overlay
 conda install -c conda-forge openslide
 ```
--  Run alignment (edit file paths in run_align_wsis_for_all_wsis.py as required, code written by Dr Florian Jaeckle)
+-  Run alignment (edit file paths in ```run_align_wsis_for_all_wsis.py``` as required, code written by Dr Florian Jaeckle)
 ```
+cd in-house/align-wsis/scripts/
 python run_align_wsis_for_all_wsis.py
 ```
--  Check alignment worked by visualising output files in 'plots' diirectory
+-  Check alignment worked by visualising output files in ```in-house/align-wsis/plots```
 4. Segment cells in QuPath
 - Download [QuPath 0.5.1](https://qupath.github.io/) (Bankhead et al., 2017). Other versions may also work.
 - Install [StarDist extension for QuPath 0.5.0](https://github.com/qupath/qupath-extension-stardist) (Schmidt et al., 2018)
 - Create QuPath project containing all IHC-stained WSIs
-- Download (1) 'he_heavy_augment.pb' (2) tissue_pixel_classifier.json (3) 'all_steps_universal_stardist_for_qupath.groovy' [(Zaidi et al., 2021)](https://github.com/MarkZaidi/Universal-StarDist-for-QuPath) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
+- Download (1) ```he_heavy_augment.pb``` (2) ```tissue_pixel_classifier.json``` (3) ```all_steps_universal_stardist_for_qupath.groovy``` [(Zaidi et al., 2021)](https://github.com/MarkZaidi/Universal-StarDist-for-QuPath) from my [Google Drive](https://drive.google.com/file/d/1qjYjfrHR4DdZCgTn2bSmcUVI4lA6lRqn/view?usp=drive_link) and change file paths as appropriate. You can alternatively create your own pixel classifier that accurately separates tissue from background
 - Run segmentation for all IHC-stained WSIs in QuPath project via Automate -> Script Editor -> all_steps_universal_stardist_for_qupath.groovy -> Run for Project. I strongly recommend you run this overnight since this can take several hours!
-5. Convert QuPath annotations into mask patches (create-masks directory)
-- Upload QuPath .geojson and .txt files to 'segmentation-annotation-data' subdirectory
+5. Convert QuPath annotations into mask patches
+- Upload QuPath .geojson and .txt files to ```in-house/create-masks/segmentation-annotation-data/```
 - Create and activate conda environment for creating masks from QuPath .geojson files
 ```
+cd in-house/create-maasks/
 conda env create -f conda.requirements.yaml
 conda activate tiatoolbox
 conda install -c conda-forge openslide
 ```
-- Convert QuPath .txt files to .csv files (edit file paths in convert_segmentation_annotations_txts_to_csvs.py as required)
+- Convert QuPath .txt files to .csv files (edit file paths in ```convert_segmentation_annotations_txts_to_csvs.py``` as required)
 ```
+cd in-house/create-masks/scripts/
 python convert_segmentation_annotations_txts_to_csvs.py
 ```
-- Calculate thresholds for classification of annotations using format provided in Jupyter Notebooks
+- Calculate thresholds for classification of annotations using format provided in ```calculate_CK_wsi_classification_thresholds.ipynb```
 - Create masks patches of size 256x256 pixels (format compatible with hovernet)
-6. Match mask patches to H&E patches and IHC patches for each WSI (create-he-ihc-patches directory)
+6. Match mask patches to H&E patches and IHC patches for each WSI
 - Create and activate conda environment for creating patches from WSIs
 ```
+cd in-house/create=he-ihc-patches/
 conda env create -f conda.requirements.yaml
 conda activate lyzeum_patch_extractor
 cd lyzeum-ml
@@ -84,10 +89,14 @@ pip install --upgrade openslide-python
 - Install [QuPath 0.3.2](https://github.com/qupath/qupath) and add a symbolic link ``"qupath"`` pointing to the QuPath executable binary in a folder added to your PATH. 
 - Create patches for aligned H&E and IHC WSIs (edit file path in ```extract_patches_from_directory.py``` as required, code written by Dr Florian Jaeckle)
 ```
+cd in-house/create-he-ihc-patches/additional-scripts-for-github/
 python extract_patches_from_directory.py
 ```
-7. Visualise masks to assess quality of segmentation and classification (ihc-mask-overlay subdirectory within hovernet-conic directory; sorry I know this is confusing but it relies on hovernet scripts)
-- Run overlay_check_folds.ipynb (edit file paths in overlay_check_folds.ipynb as required)
+7. Visualise masks to assess quality of segmentation and classification (NB - scripts in ```hovernet/hovernet-conic/ihc-mask-overlay```; sorry I know this is confusing!)
+```
+cd hovernet/hovernet-conic/ihc-mask-overlay/
+overlay_check_folds.ipynb
+```
 8. Create hovernet-compatible training data (create-training-data directory)
 - Create ```he-images.npy``` ```ihc-images.npy``` and ```masks.npy``` for each WSI. Each index of these .npy files matches with the other two .npy files at the same index (edit file paths in ```create_training_data_per_wsi_for_all_wsis.py``` as required)
  ```
@@ -119,7 +128,7 @@ As such this section will focus on how to train hovernet with Lizard and self-ge
 1. Setup pretrained backbone for hovernet models
 - Download [PyTorch ImageNet ResNet50](https://download.pytorch.org/models/resnet50-0676ba61.pth) and upload to ```pretrained/```
 - Edit ```pretrained_backbone``` variable in ```param/template.yaml``` to point to the downloaded weights above
-2. Download [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb) and upload to ```opensource/lizard/```
+2. Download [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb) and upload to ```opensource/lizard/``` (NB - not in hovernet-conic directory!)
 3. Set model hyperparameters and runtime parameters
 - change number of number of training epochs and weights for each loss component as required in ```models/hovernet/opt.py```
 - change batch_size etc in ```param/template.yaml```
