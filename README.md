@@ -6,13 +6,19 @@ This repo contains all of the code used for my Pathology Part II Project. My pro
 1. Publically available histopathologist paired-labelled datasets ([CPM17](https://drive.google.com/drive/folders/1l55cv3DuY-f7-JotDN7N5nbNnjbLWchK), [PanNuke](https://www.kaggle.com/datasets/andrewmvd/cancer-inst-segmentation-and-classification), [Lizard](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb))
 2. Self-generated paired-labelled datasets (CD3, CK)
 
-Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained duodenal tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout company, Lyzeum. The test dataset included 15 normal cases, 15 coeliac cases, 5 adenomas, 2 adenocarcinomas, 2 ulcer, 2 neuroendocrine tumour. A binary classifier logistic regression model was fitted using densities of each cell type identified by each hovernet. The diagnostic results are as follows:
+Diagnostic performance was then assessed on unseen clinically obtained, processed and histopathologist-diagnosed H&E stained duodenal tissue images exclusively available to the Soilleux Lab, University of Cambridge and its spinout company, Lyzeum. The test dataset included 15 normal cases, 15 coeliac cases, 5 adenomas, 2 adenocarcinomas, 2 ulcer, 2 neuroendocrine tumour. Three binary classifier models were fitted to the cell densities identified by each HoVer-Net. The diagnostic results are as follows:
 
-| Model                   | Precision (normal) | Precision (pathology) | Recall (normal) | Recall (pathology) | f1-score (normal) | f1-score (pathology) | Overall accuracy |
-|-------------------------|--------------------|-----------------------|-----------------|--------------------|-------------------|----------------------|------------------|
-| Lizard-trained hovernet | 0.83               | 1.00                  | 1.00            | 0.86               | 0.91              | 0.92                 | 0.9167           |
-| CD3-trained hovernet    | 1.00               | 0.64                  | 0.20            | 1.00               | 0.33              | 0.78                 | 0.6667           |
-| CK-trained hovernet     | 0.44               | 0.67                  | 0.80            | 0.29               | 0.57              | 0.40                 | 0.5000           |
+| Dataset | Binary Classification Model | Accuracy | Precision | Recall | NPV    | Specificity | Normal F1-score | Pathology F1-score |
+|---------|-----------------------------|----------|-----------|--------|--------|-------------|-----------------|--------------------|
+| Lizard  | Logistic Regression       | 0.7000   | 0.6154    | 0.5333 | 0.7407 | 0.8000      | 0.5714          | 0.7692             |
+|         | Support Vector Machine    | 0.7750   | 0.6875    | 0.7333 | 0.8333 | 0.8000      | 0.7079          | 0.8163             |
+|         | Random Forest             | 0.8250   | 0.7500    | 0.8000 | 0.8750 | 0.8400      | 0.7742          | 0.8571             |
+| CK      | Logistic Regression       | 0.7500   | 0.7273    | 0.5333 | 0.7586 | 0.8800      | 0.6154          | 0.8148             |
+|         | Support Vector Machine    | 0.6750   | 0.5714    | 0.5333 | 0.7308 | 0.7600      | 0.5517          | 0.7451             |
+|         | Random Forest             | 0.6750   | 0.5833    | 0.4667 | 0.7143 | 0.8000      | 0.5185          | 0.7547             |
+| CD3     | Logistic Regression       | 0.5750   | 0.2500    | 0.0667 | 0.6111 | 0.8800      | 0.1053          | 0.7213             |
+|         | Support Vector Machine    | 0.5500   | 0.3846    | 0.3333 | 0.6296 | 0.6800      | 0.3571          | 0.6538             |
+|         | Random Forest             | 0.5750   | 0.4167    | 0.3333 | 0.6429 | 0.7200      | 0.3704          | 0.6792             |
 
 As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in ~91% of cases thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
 
