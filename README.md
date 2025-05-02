@@ -20,7 +20,7 @@ Diagnostic performance was then assessed on unseen clinically obtained, processe
 |         | Support Vector Machine    | 0.5500   | 0.3846    | 0.3333 | 0.6296 | 0.6800      | 0.3571          | 0.6538             |
 |         | Random Forest             | 0.5750   | 0.4167    | 0.3333 | 0.6429 | 0.7200      | 0.3704          | 0.6792             |
 
-As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in ~91% of cases thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
+As shown above, Lizard-trained hovernet accurately classifies duodenal biopsies as normal or pathological in 82.5% of cases (AUROC=0.9000) thereby supporting the hypothesis that machine learning-based cell segmentation and classification approaches have the potential to automate the diagnosis of normal duodenal biopsies.
 
 Whilst the CD3-trained hovernet and CK-trained hovernet are poorer at biopsy diagnosis this is perhaps not surprising given the CD3 and CK dataset were generated **entirely automatically** (no human labelling involved). The development of an automated pipeline to generate training data for hovernet from scratch in this project is itself a success since it enabled, across both the CD3 and CK dataset, labelling of 9,809,543 cells; **approximately 20x more cells than in the largest publically available dataset (Lizard)**. It is anticipated that further development of this pipeline will enable the creation of accurately-labelled datasets that are orders of magnitude larger than those currently available for future machine learning applications.
 
